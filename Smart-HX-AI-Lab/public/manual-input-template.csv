@@ -1,0 +1,4 @@
+hot_inlet_temp,hot_outlet_temp,cold_inlet_temp,cold_outlet_temp,hot_flow_rate,cold_flow_rate,pressure_drop,fouling_resistance
+80.5,65.2,20.1,35.8,2.5,2.2,150.5,0.001
+81.2,66.1,19.8,36.2,2.4,2.3,152.1,0.0012
+79.8,64.9,20.5,35.5,2.6,2.1,148.9,0.0015
