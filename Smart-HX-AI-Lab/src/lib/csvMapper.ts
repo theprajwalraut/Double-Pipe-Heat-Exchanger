@@ -6,15 +6,15 @@ export interface FieldMapping {
 }
 
 export const expectedFields = {
-  timestamp: ['timestamp', 'time', 'date', 't', 'datetime', 'Time'],
-  inletTempHot: ['inletTempHot', 'T_hot_in', 'hot_inlet_temp', 'inlet_temp_hot', 'Th_in', 'hot_in', 'T_h_in', 'temp_hot_in', 'hot_inlet', 'inlet_hot'],
-  outletTempHot: ['outletTempHot', 'T_hot_out', 'hot_outlet_temp', 'outlet_temp_hot', 'Th_out', 'hot_out', 'T_h_out', 'temp_hot_out', 'hot_outlet', 'outlet_hot'],
-  inletTempCold: ['inletTempCold', 'T_cold_in', 'cold_inlet_temp', 'inlet_temp_cold', 'Tc_in', 'cold_in', 'T_c_in', 'temp_cold_in', 'cold_inlet', 'inlet_cold'],
-  outletTempCold: ['outletTempCold', 'T_cold_out', 'cold_outlet_temp', 'outlet_temp_cold', 'Tc_out', 'cold_out', 'T_c_out', 'temp_cold_out', 'cold_outlet', 'outlet_cold'],
-  flowRateHot: ['flowRateHot', 'flow_hot', 'hot_flow_rate', 'mh', 'm_hot', 'flow_rate_hot', 'mass_flow_hot', 'flowrate_hot', 'hot_mass_flow'],
-  flowRateCold: ['flowRateCold', 'flow_cold', 'cold_flow_rate', 'mc', 'm_cold', 'flow_rate_cold', 'mass_flow_cold', 'flowrate_cold', 'cold_mass_flow'],
+  timestamp: ['timestamp', 'time', 'date', 't', 'datetime', 'Time', 'DateTime'],
+  inletTempHot: ['inletTempHot', 'T_hot_in', 'hot_inlet_temp', 'inlet_temp_hot', 'Th_in', 'Th_inlet', 'hot_in', 'T_h_in', 'temp_hot_in', 'hot_inlet', 'inlet_hot'],
+  outletTempHot: ['outletTempHot', 'T_hot_out', 'hot_outlet_temp', 'outlet_temp_hot', 'Th_out', 'Th_outlet', 'hot_out', 'T_h_out', 'temp_hot_out', 'hot_outlet', 'outlet_hot'],
+  inletTempCold: ['inletTempCold', 'T_cold_in', 'cold_inlet_temp', 'inlet_temp_cold', 'Tc_in', 'Tc_inlet', 'cold_in', 'T_c_in', 'temp_cold_in', 'cold_inlet', 'inlet_cold'],
+  outletTempCold: ['outletTempCold', 'T_cold_out', 'cold_outlet_temp', 'outlet_temp_cold', 'Tc_out', 'Tc_outlet', 'cold_out', 'T_c_out', 'temp_cold_out', 'cold_outlet', 'outlet_cold'],
+  flowRateHot: ['flowRateHot', 'flow_hot', 'hot_flow_rate', 'mh', 'm_hot', 'flow_rate_hot', 'mass_flow_hot', 'mass_flow_h', 'flowrate_hot', 'hot_mass_flow'],
+  flowRateCold: ['flowRateCold', 'flow_cold', 'cold_flow_rate', 'mc', 'm_cold', 'flow_rate_cold', 'mass_flow_cold', 'mass_flow_c', 'flowrate_cold', 'cold_mass_flow'],
   pressureDrop: ['pressureDrop', 'pressure_drop', 'dp', 'delta_p', 'press_drop', 'dP', 'ΔP', 'pressure', 'deltap', 'delta_pressure'],
-  foulingResistance: ['foulingResistance', 'Rf', 'fouling_resistance', 'R_f', 'fouling', 'resistance', 'fouling_factor', 'R_fouling', 'fouling_res']
+  foulingResistance: ['foulingResistance', 'Rf', 'fouling_resistance', 'R_f', 'fouling', 'resistance', 'fouling_factor', 'fouling_factor', 'R_fouling', 'fouling_res']
 }
 
 function calculateSimilarity(str1: string, str2: string): number {
@@ -92,14 +92,9 @@ export function validateMappings(mappings: FieldMapping[]): { isValid: boolean; 
   const mappedFields = mappings.map(m => m.targetField)
   const missing = requiredFields.filter(field => !mappedFields.includes(field))
   
-  const suggestions = missing.map(field => {
-    const examples = expectedFields[field as keyof typeof expectedFields].slice(0, 3).join(', ')
-    return `${field}: Try columns like ${examples}`
-  })
-  
   return {
     isValid: missing.length === 0,
     missing,
-    suggestions
+    suggestions: []
   }
 }

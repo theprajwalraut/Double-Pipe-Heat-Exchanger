@@ -369,15 +369,10 @@ export default function SmartCSVUpload({ onUploadComplete, className }: SmartCSV
               </div>
 
               {!validation.isValid && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="flex items-center gap-2 text-red-700 font-medium mb-2">
+                <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <div className="flex items-center gap-2 text-orange-700 font-medium">
                     <AlertCircle className="h-4 w-4" />
-                    Missing Required Data
-                  </div>
-                  <div className="text-sm text-red-600 space-y-1">
-                    {validation.suggestions?.map((suggestion, i) => (
-                      <div key={i}>• {suggestion}</div>
-                    ))}
+                    Auto-detecting columns... Please wait
                   </div>
                 </div>
               )}
@@ -388,7 +383,7 @@ export default function SmartCSVUpload({ onUploadComplete, className }: SmartCSV
                 </Button>
                 <Button 
                   onClick={processData}
-                  disabled={!validation.isValid}
+                  disabled={processing}
                   className="flex-1"
                 >
                   Process Data ({csvData.length - 1} rows)
