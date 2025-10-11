@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -7,6 +8,30 @@ import { Progress } from '@/components/ui/progress'
 import { Activity, TrendingUp, Thermometer, Droplets, CheckCircle } from 'lucide-react'
 
 export default function DashboardPage() {
+  const [realTimeData, setRealTimeData] = useState({
+    effectiveness: 82.5,
+    foulingRate: 2.5,
+    energyEfficiency: 78.3,
+    cleaningDays: 15,
+    systemHealth: 85
+  })
+
+  useEffect(() => {
+    const fetchRealTimeData = async () => {
+      try {
+        const response = await fetch('/api/realtime')
+        const data = await response.json()
+        setRealTimeData(data)
+      } catch (error) {
+        console.error('Failed to fetch real-time data:', error)
+      }
+    }
+
+    fetchRealTimeData()
+    const interval = setInterval(fetchRealTimeData, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -19,12 +44,7 @@ export default function DashboardPage() {
             ⚡ Real-time monitoring and AI-powered analysis of heat exchanger performance 🚀
           </p>
         </div>
-        <div className="flex items-center space-x-2">
-          <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
-            <CheckCircle className="w-3 h-3 mr-1" />
-            💚 System Health: 85%
-          </Badge>
-        </div>
+
       </div>
 
       {/* KPI Cards */}
@@ -35,7 +55,7 @@ export default function DashboardPage() {
             <TrendingUp className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">82.5%</div>
+            <div className="text-2xl font-bold text-blue-600">{realTimeData.effectiveness.toFixed(1)}%</div>
             <p className="text-xs text-blue-500">
               Heat transfer efficiency
             </p>
@@ -48,7 +68,7 @@ export default function DashboardPage() {
             <Activity className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">2.5</div>
+            <div className="text-2xl font-bold text-orange-600">{realTimeData.foulingRate.toFixed(1)}</div>
             <p className="text-xs text-orange-500">
               μm²K/W per day
             </p>
@@ -61,7 +81,7 @@ export default function DashboardPage() {
             <Thermometer className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">78.3%</div>
+            <div className="text-2xl font-bold text-green-600">{realTimeData.energyEfficiency.toFixed(1)}%</div>
             <p className="text-xs text-green-500">
               Overall system efficiency
             </p>
@@ -74,7 +94,7 @@ export default function DashboardPage() {
             <Droplets className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">15</div>
+            <div className="text-2xl font-bold text-purple-600">{Math.round(realTimeData.cleaningDays)}</div>
             <p className="text-xs text-purple-500">
               Days until cleaning
             </p>
@@ -82,24 +102,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* System Health Progress */}
-      <Card className="bg-gradient-to-r from-indigo-50 to-blue-50 border-indigo-200 hover:shadow-lg transition-shadow">
-        <CardHeader>
-          <CardTitle className="text-indigo-700">💖 System Health Score</CardTitle>
-          <CardDescription className="text-indigo-600">
-            🔍 Overall system performance based on multiple factors
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-indigo-700">Health Score</span>
-              <span className="text-sm text-indigo-600">85%</span>
-            </div>
-            <Progress value={85} className="w-full [&>div]:bg-gradient-to-r [&>div]:from-indigo-500 [&>div]:to-purple-500" />
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Quick Actions */}
       <Card className="bg-gradient-to-r from-gray-50 to-slate-50 border-gray-200 hover:shadow-lg transition-shadow">

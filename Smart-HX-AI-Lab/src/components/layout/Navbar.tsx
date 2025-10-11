@@ -34,14 +34,20 @@ export default function Navbar() {
     <header className={cn(
       "fixed top-0 right-0 z-30 h-16 bg-background border-b transition-all duration-300",
       sidebarCollapsed ? "left-16" : "left-64",
-      "lg:left-0"
+      "lg:left-64"
     )}>
-      <div className="flex h-full items-center justify-between px-6">
+      <div className="flex h-full items-center justify-between px-6 lg:px-8">
         {/* Title */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           <h1 className="text-xl font-semibold">
             Fouling Prediction & Performance Optimization
           </h1>
+          <img 
+            src="/mitaoelogo.jpg" 
+            alt="MIT AOE Logo" 
+            className="h-12 w-auto"
+            onError={(e) => console.log('Logo not found')}
+          />
         </div>
 
         {/* Right side actions */}

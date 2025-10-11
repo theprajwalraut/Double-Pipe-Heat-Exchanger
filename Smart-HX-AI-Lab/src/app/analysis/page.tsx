@@ -9,23 +9,17 @@ import { Button } from '@/components/ui/button'
 export default function AnalysisPage() {
   const { currentAnalysis } = useAppStore()
 
-  if (!currentAnalysis) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <BarChart3 className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-          <h3 className="text-lg font-medium mb-2">No Data Available</h3>
-          <p className="text-muted-foreground mb-4">Upload CSV data to view analysis charts</p>
-          <Button onClick={() => window.location.href = '/upload'}>
-            <Upload className="h-4 w-4 mr-2" />
-            Upload Data
-          </Button>
-        </div>
-      </div>
-    )
+  // Always show sample data if no analysis exists
+  const displayData = currentAnalysis || {
+    data: [
+      { inletTempHot: 80.5, outletTempHot: 65.2, inletTempCold: 20.1, outletTempCold: 35.8, foulingResistance: 0.001 },
+      { inletTempHot: 81.2, outletTempHot: 66.1, inletTempCold: 19.8, outletTempCold: 36.2, foulingResistance: 0.0012 },
+      { inletTempHot: 79.8, outletTempHot: 64.9, inletTempCold: 20.5, outletTempCold: 35.5, foulingResistance: 0.0015 }
+    ],
+    metrics: { effectiveness: 0.78, systemHealthScore: 75 }
   }
 
-  const chartData = currentAnalysis.data.map((d, index) => ({
+  const chartData = displayData.data.map((d, index) => ({
     index: index + 1,
     hotInlet: d.inletTempHot,
     hotOutlet: d.outletTempHot,
@@ -53,7 +47,7 @@ export default function AnalysisPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-blue-600">📊 Data Points</p>
-                <p className="text-2xl font-bold text-blue-700">{currentAnalysis.data.length}</p>
+                <p className="text-2xl font-bold text-blue-700">{displayData.data.length}</p>
               </div>
               <BarChart3 className="h-8 w-8 text-blue-600" />
             </div>
@@ -64,7 +58,7 @@ export default function AnalysisPage() {
             <div>
               <p className="text-sm text-red-600">🌡️ Avg Hot Inlet</p>
               <p className="text-2xl font-bold text-red-700">
-                {(currentAnalysis.data.reduce((sum, d) => sum + d.inletTempHot, 0) / currentAnalysis.data.length).toFixed(1)}°C
+                {(displayData.data.reduce((sum, d) => sum + d.inletTempHot, 0) / displayData.data.length).toFixed(1)}°C
               </p>
             </div>
           </CardContent>
@@ -74,7 +68,7 @@ export default function AnalysisPage() {
             <div>
               <p className="text-sm text-yellow-600">⚠️ Max Fouling</p>
               <p className="text-2xl font-bold text-yellow-700">
-                {Math.max(...currentAnalysis.data.map(d => d.foulingResistance)).toFixed(4)}
+                {Math.max(...displayData.data.map(d => d.foulingResistance)).toFixed(4)}
               </p>
             </div>
           </CardContent>
@@ -83,7 +77,7 @@ export default function AnalysisPage() {
           <CardContent className="p-4">
             <div>
               <p className="text-sm text-green-600">🎯 Effectiveness</p>
-              <p className="text-2xl font-bold text-green-700">{(currentAnalysis.metrics.effectiveness * 100).toFixed(1)}%</p>
+              <p className="text-2xl font-bold text-green-700">{(displayData.metrics.effectiveness * 100).toFixed(1)}%</p>
             </div>
           </CardContent>
         </Card>
