@@ -23,9 +23,9 @@ export default function OptimizationPage() {
   const { currentAnalysis, addNotification } = useAppStore()
   const [params, setParams] = useState<OptimizationParams>({
     maxFoulingResistance: 0.05,
-    cleaningCost: 5000,
-    downtimeCost: 2000,
-    energyCostPerKWh: 0.12
+    cleaningCost: 415000,
+    downtimeCost: 166000,
+    energyCostPerKWh: 9.96
   })
   const [result, setResult] = useState<OptimizationResult | null>(null)
   const [whatIfParams, setWhatIfParams] = useState({
@@ -120,7 +120,7 @@ export default function OptimizationPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="cleaningCost">Cleaning Cost ($)</Label>
+                  <Label htmlFor="cleaningCost">Cleaning Cost (₹)</Label>
                   <Input
                     id="cleaningCost"
                     type="number"
@@ -133,7 +133,7 @@ export default function OptimizationPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="downtimeCost">Downtime Cost ($)</Label>
+                  <Label htmlFor="downtimeCost">Downtime Cost (₹)</Label>
                   <Input
                     id="downtimeCost"
                     type="number"
@@ -146,7 +146,7 @@ export default function OptimizationPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="energyCost">Energy Cost ($/kWh)</Label>
+                  <Label htmlFor="energyCost">Energy Cost (₹/kWh)</Label>
                   <Input
                     id="energyCost"
                     type="number"
@@ -200,7 +200,7 @@ export default function OptimizationPage() {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-muted-foreground">Energy Savings</p>
-                            <p className="text-2xl font-bold">${result.energyCostSavings.toFixed(0)}</p>
+                            <p className="text-2xl font-bold">₹{(result.energyCostSavings * 83).toLocaleString('en-IN')}</p>
                             <p className="text-xs text-muted-foreground">per month</p>
                           </div>
                           <Zap className="h-8 w-8 text-green-600" />
@@ -220,7 +220,7 @@ export default function OptimizationPage() {
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Total Cost Savings:</span>
-                          <span className="font-medium">${result.totalCostSavings.toFixed(0)}/month</span>
+                          <span className="font-medium">₹{(result.totalCostSavings * 83).toLocaleString('en-IN')}/month</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Recommended Inlet Temp:</span>
@@ -234,7 +234,7 @@ export default function OptimizationPage() {
                           <span className="text-muted-foreground">ROI Period:</span>
                           <span className="font-medium">
                             {result.totalCostSavings > 0 
-                              ? Math.ceil(params.cleaningCost / result.totalCostSavings) 
+                              ? Math.ceil((params.cleaningCost / 83) / result.totalCostSavings) 
                               : 'N/A'} months
                           </span>
                         </div>
@@ -365,7 +365,7 @@ export default function OptimizationPage() {
                         whatIfResult.energySavings > 0 ? 'text-green-900' : 'text-red-900'
                       }`}>
                         {whatIfResult.energySavings > 0 ? 'Improvement' : 'Degradation'}: 
-                        ${Math.abs(whatIfResult.energySavings).toFixed(0)} energy cost impact
+                        ₹{(Math.abs(whatIfResult.energySavings) * 83).toLocaleString('en-IN')} energy cost impact
                       </p>
                     </div>
                   </div>

@@ -389,7 +389,7 @@ export default function SmartInputPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Effectiveness:</span>
-                    <span className="font-medium">{(results.effectiveness * 100).toFixed(1)}%</span>
+                    <span className="font-medium">{results.effectiveness.toFixed(3)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Fouling Rate:</span>
@@ -402,10 +402,6 @@ export default function SmartInputPage() {
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Energy Efficiency:</span>
                     <span className="font-medium">{results.energyEfficiency.toFixed(1)}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Health Score:</span>
-                    <span className="font-medium">{results.systemHealthScore.toFixed(0)}/100</span>
                   </div>
                 </div>
               </CardContent>

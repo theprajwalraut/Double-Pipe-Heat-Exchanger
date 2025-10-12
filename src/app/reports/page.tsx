@@ -286,23 +286,17 @@ export default function ReportsPage() {
             </CardContent>
           </Card>
 
-          {currentAnalysis && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Analysis Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
+          <Card>
+            <CardHeader>
+              <CardTitle>Analysis Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {currentAnalysis ? (
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <div className="font-medium">Effectiveness</div>
                     <div className="text-muted-foreground">
-                      {(currentAnalysis.metrics.effectiveness * 100).toFixed(1)}%
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-medium">Health Score</div>
-                    <div className="text-muted-foreground">
-                      {currentAnalysis.metrics.systemHealthScore.toFixed(0)}/100
+                      {currentAnalysis.metrics.effectiveness.toFixed(3)}
                     </div>
                   </div>
                   <div>
@@ -318,9 +312,14 @@ export default function ReportsPage() {
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              ) : (
+                <div className="text-center py-4 text-muted-foreground">
+                  <p className="text-sm">No analysis data available</p>
+                  <p className="text-xs">Use Smart Input or upload data to see summary</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

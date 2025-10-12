@@ -20,8 +20,28 @@ export function calculateMetrics(data: HeatExchangerData[]): CalculatedMetrics {
 
   const avgFoulingResistance = data.reduce((sum, d) => sum + d.foulingResistance, 0) / data.length;
   const effectiveness = Math.max(0, Math.min(1, 0.85 - avgFoulingResistance * 0.1));
-  const foulingRate = data.length > 1 ? 
-    (data[data.length - 1].foulingResistance - data[0].foulingResistance) / data.length : 0;
+  
+  // Dynamic fouling rate calculation based on operating conditions
+  const latestData = data[data.length - 1];
+  const tempDiff = latestData.inletTempHot - latestData.inletTempCold;
+  const avgFlowRate = (latestData.flowRateHot + latestData.flowRateCold) / 2;
+  const initialFouling = latestData.foulingResistance;
+  
+  let baseFoulingRate = 0.000001; // Base minimum rate
+  
+  // Temperature difference factor
+  if (tempDiff > 50) {
+    baseFoulingRate += 0.00005 + (tempDiff - 50) * 0.000002;
+  }
+  
+  // Flow rate factor
+  if (avgFlowRate > 3) {
+    baseFoulingRate += 0.00002 + (avgFlowRate - 3) * 0.00001;
+  }
+  
+  // Scale by initial fouling resistance
+  const foulingRate = baseFoulingRate * (1 + initialFouling * 50);
+  
   const overallHeatTransferCoeff = 1000 / (1 + avgFoulingResistance * 100);
   const energyEfficiency = effectiveness * 100;
   const recommendedCleaningDays = Math.max(7, Math.min(90, 30 - avgFoulingResistance * 200));
