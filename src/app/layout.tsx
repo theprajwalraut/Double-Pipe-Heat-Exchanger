@@ -31,13 +31,6 @@ export default function RootLayout({
 }
 
 function AuthWrapper({ children }: { children: React.ReactNode }) {
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : ''
-  const isAuthPage = pathname === '/login' || pathname === '/signup'
-  
-  if (isAuthPage) {
-    return <>{children}</>
-  }
-  
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
