@@ -46,6 +46,11 @@ export default function Navbar() {
 
         {/* Right side actions */}
         <div className="flex items-center space-x-4">
+          <img 
+            src="/mitaoelogo.jpg" 
+            alt="MIT AOE Logo" 
+            className="h-10 w-auto object-contain"
+          />
           {/* <img 
             src="/mitaoelogo.jpg" 
             alt="MIT AOE Logo" 
